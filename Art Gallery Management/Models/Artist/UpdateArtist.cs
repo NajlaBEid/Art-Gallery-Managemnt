@@ -2,7 +2,7 @@
 
 namespace Art_Gallery_Management.Models.Artists
 {
-    public class AddArtist
+    public class UpdateArtist
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

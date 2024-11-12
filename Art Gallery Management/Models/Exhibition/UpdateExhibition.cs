@@ -1,9 +1,6 @@
-﻿using Art_Gallery_Management.Models.ArtWorks;
-using Art_Gallery_Management.Models.Managers;
-
-namespace Art_Gallery_Management.Models.Exhibitions
+﻿namespace Art_Gallery_Management.Models.Exhibitions
 {
-    public class AddExhibition
+    public class UpdateExhibition
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -13,6 +10,5 @@ namespace Art_Gallery_Management.Models.Exhibitions
 
         //One-to-Many with Manager
         public int ManagerId { get; set; }
-       
     }
 }

@@ -13,10 +13,8 @@ namespace Art_Gallery_Management.Models.ArtWorks
 
         //One-to-One with Exhibition
         public int ExhibitionId { get; set; } // FK
-        public Exhibition Exhibition { get; set; } = null!;
 
         //One-to-Many with Artist
         public int ArtistId { get; set; } // FK
-        public Artist Artist { get; set; } = null!;
     }
 }

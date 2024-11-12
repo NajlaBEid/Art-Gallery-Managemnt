@@ -1,12 +1,7 @@
-﻿using Art_Gallery_Management.Models.Artists;
-using Art_Gallery_Management.Models.Exhibitions;
-using System.ComponentModel.DataAnnotations;
-
-namespace Art_Gallery_Management.Models.ArtWorks
+﻿namespace Art_Gallery_Management.Models.ArtWorks
 {
-    public class ArtWork
+    public class UpdateArtWork
     {
-        [Key]
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Medium { get; set; } = string.Empty;
@@ -15,11 +10,8 @@ namespace Art_Gallery_Management.Models.ArtWorks
 
         //One-to-One with Exhibition
         public int ExhibitionId { get; set; } // FK
-        public Exhibition Exhibition { get; set; } = null!;
 
         //One-to-Many with Artist
         public int ArtistId { get; set; } // FK
-        public Artist Artist  { get; set; } = null!;
-
     }
 }

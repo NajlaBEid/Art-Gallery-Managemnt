@@ -1,7 +1,6 @@
 ﻿using Art_Gallery_Management.Models.ArtWorks;
 using Art_Gallery_Management.Models.Managers;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata;
 
 namespace Art_Gallery_Management.Models.Exhibitions
 {
@@ -16,7 +15,7 @@ namespace Art_Gallery_Management.Models.Exhibitions
 
         //One-to-Many with Manager
         public int ManagerId { get; set; }
-        public Manager Manager { get; set; } = null!;
+       public Manager Manager { get; set; } = null!;
 
         //One-to-One with ArtWork
         public ArtWork? artWork { get; set; }

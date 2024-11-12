@@ -5,7 +5,7 @@ namespace Art_Gallery_Management.Models.Exhibitions
 {
     public class ExhibitionDto
     {
-   
+    
         public string Title { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;
         public DateTime StartDate { get; set; } = DateTime.Now;

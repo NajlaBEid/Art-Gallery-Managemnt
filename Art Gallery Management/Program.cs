@@ -1,7 +1,12 @@
 using Art_Gallery_Management.Data;
+using Art_Gallery_Management.Repositories.ArtistRepository;
+using Art_Gallery_Management.Repositories.ArtWorkRepository;
+using Art_Gallery_Management.Repositories.ExhibitionRepository;
+using Art_Gallery_Management.Repositories.ManagerRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
@@ -13,6 +18,17 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//register 
+builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
+builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
+builder.Services.AddScoped<IExhibitionRepository, ExhibitionRepository>();
+builder.Services.AddScoped<IArtWorkRepository, ArtWorkRepository>();
+
+
+
+builder.Services.AddAutoMapper(typeof(Program));
+
 
 var app = builder.Build();
 
