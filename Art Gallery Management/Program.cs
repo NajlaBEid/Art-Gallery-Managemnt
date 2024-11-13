@@ -3,6 +3,8 @@ using Art_Gallery_Management.Repositories.ArtistRepository;
 using Art_Gallery_Management.Repositories.ArtWorkRepository;
 using Art_Gallery_Management.Repositories.ExhibitionRepository;
 using Art_Gallery_Management.Repositories.ManagerRepository;
+using Art_Gallery_Management.Security;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +27,11 @@ builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
 builder.Services.AddScoped<IExhibitionRepository, ExhibitionRepository>();
 builder.Services.AddScoped<IArtWorkRepository, ArtWorkRepository>();
 
+//Bind BasicAuth 
+builder.Services.Configure<BasicAuthSeetings>(builder.Configuration.GetSection("BasicAuth"));
 
+builder.Services.AddAuthentication("BasicAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthMiddleware>("BasicAuthentication", null);
 
 builder.Services.AddAutoMapper(typeof(Program));
 
