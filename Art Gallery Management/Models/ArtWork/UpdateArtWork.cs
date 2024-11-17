@@ -2,7 +2,7 @@
 {
     public class UpdateArtWork
     {
-        public int Id { get; set; }
+      
         public string Name { get; set; } = string.Empty;
         public string Medium { get; set; } = string.Empty;
         public decimal price { get; set; }

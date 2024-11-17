@@ -19,29 +19,29 @@ namespace Art_Gallery_Management.Repositories.ArtWorkRepository
         }
         public ArtWork CreateArtWork(ArtWork artWork)
         {
-            _artWorks.Add(artWork);
-            _context.SaveChanges();
+             _artWorks.Add(artWork);
+             _context.SaveChanges();
             return artWork;
         }
 
-        public ArtWork GetArtWorkById(int id)
+        public async Task<ArtWork> GetArtWorkById(int id)
         {
-            return _artWorks.Find(id);
+            return await _artWorks.FindAsync(id);
         }
 
-        public ArtWork UpdateArtWork(ArtWork artWork, int id)
+        public async Task<ArtWork> UpdateArtWork(ArtWork artWork, int id)
         {
+           
             _artWorks.Update(artWork);
             _context.SaveChanges();
             return artWork;
         }
         public void DeleteArtWork(int id)
         {
-            ArtWork artWork = _artWorks.FirstOrDefault(x => x.Id == id);
-            _artWorks.Remove(artWork);
-            _context.SaveChanges();
-
-
+            ArtWork artWork = _artWorks.Find(id);
+             _artWorks.Remove(artWork);
+             _context.SaveChanges();
+            
         }
     }
 }

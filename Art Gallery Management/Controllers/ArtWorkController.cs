@@ -2,6 +2,7 @@
 using Art_Gallery_Management.Models.ArtWorks;
 using Art_Gallery_Management.Repositories.ArtWorkRepository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -10,6 +11,7 @@ namespace Art_Gallery_Management.Controllers
 {
     [Route("api/artwork")]
     [ApiController]
+    
     public class ArtWorkController : ControllerBase
     {
         private readonly IArtWorkRepository _repository;
@@ -23,11 +25,11 @@ namespace Art_Gallery_Management.Controllers
         }
 
         [HttpGet]
-        public ArtWorkDto GetArtWork(int id)
+        public async Task<IActionResult> GetArtWork(int id)
         {
-            ArtWork artwork = _repository.GetArtWorkById(id);
+            ArtWork artwork =await _repository.GetArtWorkById(id);
             ArtWorkDto artWorkDto = _mapper.Map<ArtWork,ArtWorkDto>(artwork);
-            return artWorkDto;
+            return Ok( artWorkDto);
 
         }
 
@@ -40,14 +42,28 @@ namespace Art_Gallery_Management.Controllers
             ArtWorkDto artWorkDto = _mapper.Map<ArtWork, ArtWorkDto>(artWork);
             return artWorkDto;
         }
-        [HttpPut]
-        public ArtWorkDto UpdateArtWork(UpdateArtWork updateArtWork,int id)
+
+
+        [HttpPut("updateArtist/{id}")]
+        public async Task<IActionResult> UpdateArtWork([FromBody] UpdateArtWork updateArtWork,int id)
         {
-            ArtWork artWork = new ArtWork();
-            artWork = _mapper.Map<UpdateArtWork, ArtWork>(updateArtWork);
-            artWork = _repository.UpdateArtWork(artWork, id);
-            ArtWorkDto artWorkDto = _mapper.Map<ArtWork, ArtWorkDto>(artWork);
-            return artWorkDto;
+          ArtWork  exsistingArtWork = await _repository.GetArtWorkById(id);
+
+            if (exsistingArtWork == null)
+            {
+                return NotFound($"");
+            }
+            _mapper.Map(updateArtWork, exsistingArtWork);
+            var updateArtwork = await _repository.UpdateArtWork(exsistingArtWork,id);
+
+            var updatedArtWorkDto = _mapper.Map<ArtWorkDto>(updateArtwork);
+
+            return Ok(updatedArtWorkDto);
+            
+     
+
+            // get artwork
+           
         }
         [HttpDelete]
         public string DeleteArtWork(int id) {
