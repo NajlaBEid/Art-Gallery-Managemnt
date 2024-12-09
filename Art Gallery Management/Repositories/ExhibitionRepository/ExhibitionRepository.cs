@@ -16,30 +16,30 @@ namespace Art_Gallery_Management.Repositories.ExhibitionRepository
             _exhibitions = context.Set<Exhibition>();
         }
 
-        public Exhibition CreateExhibition(Exhibition exhibition)
+        public async Task<Exhibition> CreateExhibition(Exhibition exhibition)
         {
-           _exhibitions.Add(exhibition);
-            _context.SaveChanges();
+           await _exhibitions.AddAsync(exhibition);
+           await _context.SaveChangesAsync();
             return exhibition;
         }
 
 
-        public Exhibition GetExhibitionById(int id)
+        public async Task<Exhibition> GetExhibitionById(int id)
         {
-            return _exhibitions.Find(id);
+            return await _exhibitions.FindAsync(id);
         }
 
-        public Exhibition UpdateExhibiton(Exhibition exhibition, int id)
+        public async Task<Exhibition> UpdateExhibiton(Exhibition exhibition, int id)
         {
             _exhibitions.Update(exhibition);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return exhibition;
         }
-        public void DeleteExhibition(int id)
+        public async Task<Exhibition> DeleteExhibition(Exhibition exhibition)
         {
-            Exhibition exhibition = _exhibitions.FirstOrDefault(a => a.Id == id);
             _exhibitions.Remove(exhibition);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return exhibition;
            
 
         }

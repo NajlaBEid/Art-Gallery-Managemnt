@@ -4,9 +4,9 @@ namespace Art_Gallery_Management.Repositories.ArtistRepository
 {
     public interface IArtistRepository
     {
-        Artist GetById(int id);
-        Artist CreateArtist(Artist artist);
-        Artist UpdateArtist(Artist artist, int id);
-        void DeleteArtist(int id);
+        Task<Artist> GetById(int id);
+        Task<Artist> CreateArtist(Artist artist);
+        Task<Artist> UpdateArtist(Artist artist, int id);
+        Task<Artist> DeleteArtist(Artist id);
     }
 }

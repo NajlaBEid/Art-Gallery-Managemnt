@@ -16,26 +16,27 @@ namespace Art_Gallery_Management.Repositories.ManagerRepository
             _context = context;
             _managers = context.Set<Manager>();
         }
-        public Manager CreateManager(Manager manager)
+        public async Task<Manager> CreateManager(Manager manager)
         {
             _managers.Add(manager);
             _context.SaveChanges();
             return manager;
         }
 
-        public void DeleteManager(int id)
+        public  async Task<Manager> DeleteManager(Manager manager)
         {
-            Manager  manager = _managers.FirstOrDefault(a => a.Id == id);
+            
             _managers.Remove(manager);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return manager;
         }
 
-        public Manager GetManagerById(int id)
+        public async Task<Manager> GetManagerById(int id)
         {
             return _managers.Find(id);
         }
 
-        public Manager UpdateManager(Manager manager, int id)
+        public async Task<Manager> UpdateManager(Manager manager, int id)
         {
             _managers.Update(manager);
             _context.SaveChanges();

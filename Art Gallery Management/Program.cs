@@ -27,6 +27,25 @@ builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
 builder.Services.AddScoped<IExhibitionRepository, ExhibitionRepository>();
 builder.Services.AddScoped<IArtWorkRepository, ArtWorkRepository>();
 
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("https://localhost:9200"))
+    {
+        AutoRegisterTemplate = true, // Automatically register index template
+        IndexFormat = "dotnet-logs-{0:yyyy.MM.dd}", // Define index name format
+        ModifyConnectionSettings = conn =>
+            conn.BasicAuthentication("elastic", "elastic") // Replace <password> with your Elasticsearch password
+                .ServerCertificateValidationCallback((sender, cert, chain, sslPolicyErrors) => true) // Allow self-signed certificates
+    })
+    .CreateLogger();
+
+// Set Serilog as the default logger
+Log.Logger = logger;
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
+
+
 //Bind BasicAuth 
 builder.Services.Configure<BasicAuthSeetings>(builder.Configuration.GetSection("BasicAuth"));
 

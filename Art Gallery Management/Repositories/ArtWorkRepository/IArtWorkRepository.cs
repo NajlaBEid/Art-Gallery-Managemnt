@@ -6,8 +6,8 @@ namespace Art_Gallery_Management.Repositories.ArtWorkRepository
     public interface IArtWorkRepository
     {
          Task<ArtWork> GetArtWorkById(int id);
-         ArtWork CreateArtWork(ArtWork artwork);
+         Task<ArtWork> CreateArtWork(ArtWork artwork);
          Task<ArtWork> UpdateArtWork(ArtWork artWork, int id);
-        void DeleteArtWork(int id);
+         Task<ArtWork> DeleteArtWork(ArtWork artWork);
     }
 }

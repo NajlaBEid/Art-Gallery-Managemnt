@@ -15,32 +15,33 @@ namespace Art_Gallery_Management.Repositories.ArtistRepository
 
         }
 
-        public  Artist CreateArtist(Artist artist)
+        public  async Task<Artist> CreateArtist(Artist artist)
         {
-            _artists.Add(artist);
-            _context.SaveChanges();
+            await _artists.AddAsync(artist);
+            await _context.SaveChangesAsync();
             return artist;
 
         }
 
-        public void DeleteArtist(int id)
+        public async Task<Artist> DeleteArtist(Artist artist)
         {
-            Artist artist = _artists.FirstOrDefault(a => a.Id == id);
+           
             _artists.Remove(artist);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return artist;
 
         }
 
-        public  Artist GetById(int id)
+        public  async Task<Artist> GetById(int id)
         {
-            return _artists.Find(id);
+            return await _artists.FindAsync(id);
         }
 
-        public Artist UpdateArtist(Artist artist, int id)
+        public async Task<Artist> UpdateArtist(Artist artist, int id)
         {
             
             _artists.Update(artist);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return artist;
 
         }

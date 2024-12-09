@@ -1,6 +1,7 @@
 ﻿using Art_Gallery_Management.Models.Exhibitions;
 using Art_Gallery_Management.Repositories.ExhibitionRepository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Art_Gallery_Management.Controllers
 {
     [Route("api/exhibition")]
     [ApiController]
+    //[Authorize]
     public class ExhibitionController : ControllerBase
     {
         private readonly IExhibitionRepository _repository;
@@ -19,41 +21,52 @@ namespace Art_Gallery_Management.Controllers
         }
 
         [HttpGet]
-        public ExhibitionDto GetExhibition(int id)
+        public async Task<IActionResult> GetExhibition(int id)
         {
-            Exhibition exhibition = _repository.GetExhibitionById(id);
+            Exhibition exhibition = await _repository.GetExhibitionById(id);
             ExhibitionDto exhibitionDto = _mapper.Map<Exhibition, ExhibitionDto>(exhibition);
-            return exhibitionDto;
+            return Ok(exhibitionDto);
 
 
         }
 
         [HttpPost]
-        public ExhibitionDto CreateExhibiton(AddExhibition AddExhibition)
+        public async Task<IActionResult> CreateExhibiton(AddExhibition AddExhibition)
         {
-            Exhibition exhibition = new Exhibition();
-            exhibition = _mapper.Map<AddExhibition, Exhibition>(AddExhibition);
-            exhibition = _repository.CreateExhibition(exhibition);
-            ExhibitionDto exhibitionDto = _mapper.Map<Exhibition, ExhibitionDto>(exhibition);
-            return exhibitionDto;
+            Exhibition exhibition = _mapper.Map<AddExhibition, Exhibition>(AddExhibition);
+            Exhibition createdExhibition = await _repository.CreateExhibition(exhibition);
+            ExhibitionDto exhibitionDto = _mapper.Map<Exhibition, ExhibitionDto>(createdExhibition);
+            return Ok(exhibitionDto);
         }
 
         [HttpPut]
-        public ExhibitionDto UpdateExhibiton(AddExhibition updateExhibition, int id)
+        public async Task<IActionResult> UpdateExhibiton(UpdateExhibition updateExhibition, int id)
         {
-            Exhibition exhibition = new Exhibition();
-            exhibition = _mapper.Map<AddExhibition, Exhibition>(updateExhibition);
-            exhibition = _repository.UpdateExhibiton(exhibition,id);
-            ExhibitionDto exhibitionDto = _mapper.Map<Exhibition, ExhibitionDto>(exhibition);
-            return exhibitionDto;
+            Exhibition exsistingExhibition = await _repository.GetExhibitionById(id);
+            if(exsistingExhibition == null)
+            {
+                return NotFound($"Exhibition not found");
+            }
+
+            _mapper.Map(updateExhibition, exsistingExhibition);
+            Exhibition exhibition = await _repository.UpdateExhibiton(exsistingExhibition, id);
+            var exhibitionDto = _mapper.Map<Exhibition, ExhibitionDto>(exhibition);
+ 
+            return Ok(exhibitionDto) ;
         }
 
         [HttpDelete]
-        public string DeleteExhibition(int id)
+        public async Task<IActionResult> DeleteExhibition(int id)
         {
-            _repository.DeleteExhibition(id);
-            return "Exhibition with ID: " + id + " has been deleted successfully";
+            Exhibition exhibition = await _repository.GetExhibitionById(id);
+            if(exhibition == null)
+            {
+                return NotFound($"Exhibition not found");
 
+            }
+            await _repository.DeleteExhibition(exhibition);
+            return Ok($"Exhibition with ID: {id} has been deleted successfully");
+           
         }
         }
 }

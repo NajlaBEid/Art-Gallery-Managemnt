@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.WebEncoders.Testing;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
@@ -14,7 +13,7 @@ namespace Art_Gallery_Management.Security
         private readonly BasicAuthSeetings _basicAuthSeetings;
 
         public BasicAuthMiddleware(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger,
-            UrlEncoder encoder, ISystemClock clock, IOptions<BasicAuthSeetings> authSettings) :base(options,logger,encoder,clock)
+            UrlEncoder encoder, IOptions<BasicAuthSeetings> authSettings) :base(options,logger,encoder)
         {
             _basicAuthSeetings = authSettings.Value;
         }

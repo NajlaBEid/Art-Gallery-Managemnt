@@ -27,20 +27,31 @@ namespace Art_Gallery_Management.Controllers
         [HttpGet]
         public async Task<IActionResult> GetArtWork(int id)
         {
+
             ArtWork artwork =await _repository.GetArtWorkById(id);
+            if (artwork == null)
+            {
+                return NotFound($"Artwork not found");
+            }
             ArtWorkDto artWorkDto = _mapper.Map<ArtWork,ArtWorkDto>(artwork);
             return Ok( artWorkDto);
 
         }
 
         [HttpPost]
-        public ArtWorkDto CreateArtWork(AddArtWork addArtWork)
+        public async Task<IActionResult> CreateArtWork(AddArtWork addArtWork)
         {
-            ArtWork artWork = new ArtWork();
-            artWork = _mapper.Map<AddArtWork,ArtWork>(addArtWork);
-            artWork = _repository.CreateArtWork(artWork);
-            ArtWorkDto artWorkDto = _mapper.Map<ArtWork, ArtWorkDto>(artWork);
-            return artWorkDto;
+            ArtWork artWork = _mapper.Map<AddArtWork,ArtWork>(addArtWork);
+            ArtWork createdArtWork = await _repository.CreateArtWork(artWork);
+            ArtWorkDto artWorkDto = _mapper.Map<ArtWork, ArtWorkDto>(createdArtWork);
+            return Ok( artWorkDto);
+
+
+            //ArtWork artWork = new ArtWork();
+            //artWork = _mapper.Map<AddArtWork,ArtWork>(addArtWork);
+            //artWork = _repository.CreateArtWork(artWork);
+            //ArtWorkDto artWorkDto = _mapper.Map<ArtWork, ArtWorkDto>(artWork);
+            //return artWorkDto;
         }
 
 
@@ -51,24 +62,26 @@ namespace Art_Gallery_Management.Controllers
 
             if (exsistingArtWork == null)
             {
-                return NotFound($"");
+                return NotFound($"Artwork not found");
             }
             _mapper.Map(updateArtWork, exsistingArtWork);
-            var updateArtwork = await _repository.UpdateArtWork(exsistingArtWork,id);
+            ArtWork artwork = await _repository.UpdateArtWork(exsistingArtWork,id);
 
-            var updatedArtWorkDto = _mapper.Map<ArtWorkDto>(updateArtwork);
+            var updatedArtWorkDto = _mapper.Map<ArtWork,ArtWorkDto>(artwork);
 
             return Ok(updatedArtWorkDto);
-            
-     
-
-            // get artwork
-           
+                       
         }
         [HttpDelete]
-        public string DeleteArtWork(int id) {
-            _repository.DeleteArtWork(id);
-        return "Artwork with ID: " + id + " has been deleted successfully";
+        public async Task<IActionResult> DeleteArtWork(int id) {
+            ArtWork exsistingArtWork = await _repository.GetArtWorkById(id);
+            if (exsistingArtWork == null)
+            {
+                return NotFound($"ArtWork with ID {id} not found");
+               
+            }
+            await _repository.DeleteArtWork(exsistingArtWork);
+            return Ok($"Artwork with ID:{id} has been deleted successfully");
         }
 
             

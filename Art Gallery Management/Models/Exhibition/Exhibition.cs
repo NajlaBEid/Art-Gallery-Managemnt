@@ -18,7 +18,7 @@ namespace Art_Gallery_Management.Models.Exhibitions
        public Manager Manager { get; set; } = null!;
 
         //One-to-One with ArtWork
-        public ArtWork? artWork { get; set; }
+        public ICollection<ArtWork> artWorks = new List<ArtWork>();
 
     }
 }

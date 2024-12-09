@@ -3,6 +3,7 @@ using Art_Gallery_Management.Models.ArtWorks;
 using Art_Gallery_Management.Models.Exhibitions;
 using Art_Gallery_Management.Models.Managers;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Art_Gallery_Management.Mapper
 {
@@ -28,8 +29,8 @@ namespace Art_Gallery_Management.Mapper
             CreateMap<ArtWork, ArtWorkDto>();
             CreateMap<ArtWorkDto, ArtWork>();
             CreateMap<AddArtWork, ArtWork>();
-            CreateMap<UpdateArtWork, ArtWork>();    
-
+            CreateMap<UpdateArtWork, ArtWork>(); 
+            
         
         }
     }

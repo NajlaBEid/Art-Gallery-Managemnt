@@ -2,7 +2,6 @@
 using Art_Gallery_Management.Models.Artists;
 using Art_Gallery_Management.Models.ArtWorks;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Art_Gallery_Management.Repositories.ArtWorkRepository
 {
@@ -17,10 +16,10 @@ namespace Art_Gallery_Management.Repositories.ArtWorkRepository
             _artWorks = context.Set<ArtWork>();
 
         }
-        public ArtWork CreateArtWork(ArtWork artWork)
+        public async Task<ArtWork> CreateArtWork(ArtWork artWork)
         {
-             _artWorks.Add(artWork);
-             _context.SaveChanges();
+             await _artWorks.AddAsync(artWork);
+             await _context.SaveChangesAsync();
             return artWork;
         }
 
@@ -33,14 +32,14 @@ namespace Art_Gallery_Management.Repositories.ArtWorkRepository
         {
            
             _artWorks.Update(artWork);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return artWork;
         }
-        public void DeleteArtWork(int id)
+        public async Task<ArtWork> DeleteArtWork(ArtWork artWork)
         {
-            ArtWork artWork = _artWorks.Find(id);
              _artWorks.Remove(artWork);
-             _context.SaveChanges();
+             await _context.SaveChangesAsync();
+            return artWork;
             
         }
     }
