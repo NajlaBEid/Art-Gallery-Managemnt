@@ -5,12 +5,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace Art_Gallery_Management.Controllers
 {
     [Route("api/artist")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ArtistController : ControllerBase
     {
 
@@ -38,6 +39,8 @@ namespace Art_Gallery_Management.Controllers
             Artist artist = _mapper.Map<AddArtist, Artist>(addArtist);
             Artist createdArtist = await _repository.CreateArtist(artist);
             ArtistDto artistDto = _mapper.Map<Artist, ArtistDto>(createdArtist);
+            Log.Information("Artist created  {@Artist}");
+
             return Ok(artistDto);
             //Artist newArtist = new Artist();
             //newArtist = _mapper.Map<Artist>(addArtist);
